@@ -12,20 +12,19 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button playButton = (Button)findViewById(R.id.playButton);
+
+        System.out.println("App started");
+
+        //Play button listener
+        Button playButton = findViewById(R.id.playButton);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),BattleActivity.class));
+                System.out.println("Battle intent received");
+                Intent intent = new Intent(MainActivity.this, BattleActivity.class);
+                startActivity(intent);
             }
         });
-    }
-
-    protected void startBattle(View view) {
-        System.out.println("Battle intent received");
-        // Note: Activity.this gets the content of Activity
-        Intent intent = new Intent(MainActivity.this, BattleActivity.class);
-        startActivity(intent);
     }
 
 }
