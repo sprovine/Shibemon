@@ -104,10 +104,10 @@ public class BattleActivity extends Activity {
                 }
             }, 1200);
         } else {
-            shiba1.setCurrentHealth(shiba1.getCurrentHealth() - finalDamage);
+            shiba1.setCurrentHealth(shiba2.getCurrentHealth() - finalDamage);
             System.out.println(shiba1.getName() + " health is " + shiba1.getCurrentHealth());
 
-            findViewById(R.id.shiba1).startAnimation(AnimationUtils.
+            findViewById(R.id.shiba2).startAnimation(AnimationUtils.
                     loadAnimation(getApplicationContext(), R.anim.shiba2attackshiba1));
 
             new Handler().postDelayed(new Runnable() {

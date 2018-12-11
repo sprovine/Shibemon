@@ -11,7 +11,7 @@
     <Button
         android:id="@+id/backButton"
         android:layout_width="138dp"
-        android:layout_height="55dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="199dp"
         android:background="@color/light_blue"
         android:text="TRY AGAIN?"
@@ -19,17 +19,22 @@
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gameOver" />
 
     <TextView
         android:id="@+id/gameOver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="206dp"
+        android:layout_marginBottom="10dp"
         android:text="GAME OVER"
         android:textSize="36sp"
         android:textStyle="italic"
         android:typeface="monospace"
-        tools:layout_editor_absoluteX="95dp"
-        tools:layout_editor_absoluteY="206dp" />
+        app:layout_constraintBottom_toTopOf="@+id/backButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
