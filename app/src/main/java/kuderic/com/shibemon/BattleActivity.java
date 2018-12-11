@@ -104,7 +104,7 @@ public class BattleActivity extends Activity {
                 }
             }, 1200);
         } else {
-            shiba1.setCurrentHealth(shiba2.getCurrentHealth() - finalDamage);
+            shiba1.setCurrentHealth(shiba1.getCurrentHealth() - finalDamage);
             System.out.println(shiba1.getName() + " health is " + shiba1.getCurrentHealth());
 
             findViewById(R.id.shiba2).startAnimation(AnimationUtils.
