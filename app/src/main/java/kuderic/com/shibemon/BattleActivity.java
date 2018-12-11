@@ -2,15 +2,20 @@ package kuderic.com.shibemon;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.InputStream;
 
 public class BattleActivity extends Activity {
     private static boolean canAttack = true;
@@ -26,8 +31,8 @@ public class BattleActivity extends Activity {
         setContentView(R.layout.activity_battle);
 
 
-        Button backMainButton = findViewById(R.id.backMainButton);
-        backMainButton.setOnClickListener(new View.OnClickListener() {
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("Main page intent received");
@@ -118,6 +123,10 @@ public class BattleActivity extends Activity {
                     }, 4000);
                     return;
                 }
+                if (shiba1.getCurrentHealth() == 0) {
+                    Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
+                    startActivity(intent);
+                }
                 if (shiba == shiba1) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -158,7 +167,7 @@ public class BattleActivity extends Activity {
     @SuppressLint("SetTextI18n")
     protected void updateUI() {
 
-        TextView actionPanel = findViewById(R.id.actionPanel);
+        TextView actionPanel = findViewById(R.id.actionPanelText);
         actionPanel.setText("What will " + shiba1.getName() + " do?");
 
         TextView shiba1Name = findViewById(R.id.shiba1Name);
@@ -182,10 +191,42 @@ public class BattleActivity extends Activity {
         shiba2HPBarGreen.getLayoutParams().width = dpToPx(hpBarWidth) *
                 shiba2.getCurrentHealth() / shiba2.getMaxHealth();
         shiba2HPBarGreen.requestLayout();
+
+        System.out.println("picture 1 url");
+        System.out.println(shiba1.getPicture());
+        new DownloadImageTask((ImageView) findViewById(R.id.shiba1)).execute(shiba1.getPicture());
+
+        new DownloadImageTask((ImageView) findViewById(R.id.shiba2)).execute(shiba2.getPicture());
     }
 
     public int dpToPx(int dp) {
         float density = getApplicationContext().getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
+    }
+
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

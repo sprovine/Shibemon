@@ -9,7 +9,7 @@
     tools:layout_editor_absoluteY="73dp">
 
     <Button
-        android:id="@+id/backMainButton"
+        android:id="@+id/backButton"
         android:layout_width="79dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
@@ -21,81 +21,111 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <LinearLayout
         android:id="@+id/actionPanel"
-        android:layout_width="354dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_width="350dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:background="@drawable/back"
-        android:gravity="center_horizontal"
-        android:text="What will SHIBA do?"
-        android:padding="8dp"
-        android:textSize="22sp"
-        android:typeface="monospace"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <Button
-        android:id="@+id/move1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="7dp"
-        android:text="Button"
-        android:typeface="monospace"
-        android:textAllCaps="true"
-        app:layout_constraintBottom_toTopOf="@+id/move3"
-        app:layout_constraintEnd_toStartOf="@+id/move2"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/actionPanelText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_horizontal"
+            android:paddingTop="8dp"
+            android:text="What will SHIBA do?"
+            android:textSize="22sp"
+            android:typeface="monospace"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/move2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="7dp"
-        android:text="Button"
-        android:typeface="monospace"
-        android:textAllCaps="true"
-        app:layout_constraintBottom_toTopOf="@+id/move4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/move1" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/actionPanelConstraint1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/move3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="16dp"
-        android:text="Button"
-        android:typeface="monospace"
-        android:textAllCaps="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/move4"
-        app:layout_constraintStart_toStartOf="parent" />
+            <Button
+                android:id="@+id/move1"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:text="Button"
+                android:textAllCaps="true"
+                android:typeface="monospace"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/move2"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="48dp"
+                tools:layout_conversion_absoluteWidth="90dp" />
 
-    <Button
-        android:id="@+id/move4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="16dp"
-        android:text="Button"
-        android:typeface="monospace"
-        android:textAllCaps="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/move3" />
+            <Button
+                android:id="@+id/move2"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:text="Button"
+                android:textAllCaps="true"
+                android:typeface="monospace"
+                app:layout_constraintBottom_toBottomOf="@+id/move1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/move1"
+                app:layout_constraintTop_toTopOf="@+id/move1"
+                tools:layout_conversion_absoluteHeight="48dp"
+                tools:layout_conversion_absoluteWidth="90dp" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/actionPanelConstraint2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/move3"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:text="Button"
+                android:textAllCaps="true"
+                android:typeface="monospace"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/move4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/move4"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:text="Button"
+                android:textAllCaps="true"
+                android:typeface="monospace"
+                app:layout_constraintBottom_toBottomOf="@+id/move3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/move3"
+                app:layout_constraintTop_toTopOf="@+id/move3" />
+        </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/platform1"
@@ -192,8 +222,8 @@
                 android:id="@+id/shiba1Name"
                 android:layout_width="131dp"
                 android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
                 android:text="NAME"
-                android:paddingLeft="5dp"
                 android:textAllCaps="true"
                 android:typeface="monospace" />
 

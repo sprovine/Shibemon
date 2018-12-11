@@ -6,22 +6,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends Activity {
+public class GameOverActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        System.out.println("App started");
-
         //Play button listener
-        Button playButton = findViewById(R.id.backButton);
-        playButton.setOnClickListener(new View.OnClickListener() {
+        Button gameOverButton = findViewById(R.id.backButton);
+        gameOverButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("Battle intent received");
-                Intent intent = new Intent(MainActivity.this, BattleActivity.class);
+                Intent intent = new Intent(getApplicationContext(), BattleActivity.class);
                 startActivity(intent);
             }
         });
