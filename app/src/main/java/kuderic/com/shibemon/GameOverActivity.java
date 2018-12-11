@@ -11,7 +11,7 @@ public class GameOverActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game_over);
 
         //Play button listener
         Button gameOverButton = findViewById(R.id.backButton);

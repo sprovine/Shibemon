@@ -3,19 +3,19 @@ package kuderic.com.shibemon;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.InputStream;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 
 public class BattleActivity extends Activity {
     private static boolean canAttack = true;
@@ -92,10 +92,33 @@ public class BattleActivity extends Activity {
         if (shiba == shiba1) {
             shiba2.setCurrentHealth(shiba2.getCurrentHealth() - finalDamage);
             System.out.println(shiba2.getName() + " health is " + shiba2.getCurrentHealth());
+
+            findViewById(R.id.shiba1).startAnimation(AnimationUtils.
+                    loadAnimation(getApplicationContext(), R.anim.shiba1attackshiba2));
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    findViewById(R.id.shiba1).startAnimation(AnimationUtils.
+                            loadAnimation(getApplicationContext(), R.anim.shiba1attackshiba2part2));
+                }
+            }, 1200);
         } else {
             shiba1.setCurrentHealth(shiba1.getCurrentHealth() - finalDamage);
             System.out.println(shiba1.getName() + " health is " + shiba1.getCurrentHealth());
+
+            findViewById(R.id.shiba1).startAnimation(AnimationUtils.
+                    loadAnimation(getApplicationContext(), R.anim.shiba2attackshiba1));
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    findViewById(R.id.shiba2).startAnimation(AnimationUtils.
+                            loadAnimation(getApplicationContext(), R.anim.shiba2attackshiba1part2));
+                }
+            }, 1200);
         }
+
 
         new Handler().postDelayed(new Runnable()
         {
@@ -194,39 +217,20 @@ public class BattleActivity extends Activity {
 
         System.out.println("picture 1 url");
         System.out.println(shiba1.getPicture());
-        new DownloadImageTask((ImageView) findViewById(R.id.shiba1)).execute(shiba1.getPicture());
 
-        new DownloadImageTask((ImageView) findViewById(R.id.shiba2)).execute(shiba2.getPicture());
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.mipmap.ic_launcher_round)
+                .error(R.mipmap.ic_launcher_round);
+
+        Glide.with(this).load(shiba1.getPicture()).apply(options)
+                .into((ImageView) findViewById(R.id.shiba1));
+        Glide.with(this).load(shiba2.getPicture()).apply(options)
+                .into((ImageView) findViewById(R.id.shiba2));
     }
 
     public int dpToPx(int dp) {
         float density = getApplicationContext().getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
-    }
-
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 }

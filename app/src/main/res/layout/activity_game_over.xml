@@ -21,20 +21,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/gameOverText"
-        android:layout_width="252dp"
-        android:layout_height="112dp"
-        android:layout_marginEnd="53dp"
-        android:layout_marginRight="53dp"
-        android:layout_marginBottom="46dp"
-        android:ems="10"
-        android:inputType="textPersonName"
+    <TextView
+        android:id="@+id/gameOver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="GAME OVER"
-        android:textAllCaps="false"
         android:textSize="36sp"
         android:textStyle="italic"
         android:typeface="monospace"
-        app:layout_constraintBottom_toBottomOf="@+id/backButton"
-        app:layout_constraintEnd_toEndOf="parent" />
+        tools:layout_editor_absoluteX="95dp"
+        tools:layout_editor_absoluteY="206dp" />
+
 </android.support.constraint.ConstraintLayout>

@@ -144,7 +144,7 @@ public class Shiba {
         private String name;
         private String[] names = {"Pound", "Double Slap", "Scratch", "Stomp", "Headbutt", "Slam",
                 "Bite", "Growl", "Lick", "Flail", "Fake out", "Charge", "Yawn", "Tickle",
-                "Mega Punch", "Nuzzle", "Tail Whip", "Quick Attack", "Roll Out"};
+                "Mega Punch", "Nuzzle", "Tail Whip", "Roll Out"};
 
         public String getName() {
             return name;
