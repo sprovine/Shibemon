@@ -2,6 +2,7 @@ package kuderic.com.shibemon;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,8 @@ public class BattleActivity extends Activity {
     private static boolean canAttack = true;
     private Shiba shiba1;
     private Shiba shiba2;
+    final static int hpBarWidth = 125; //in dp. use dpToPx() to find pixel ratio
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -100,7 +103,7 @@ public class BattleActivity extends Activity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            displayToast(shiba2.getName() + " has been defeated.",
+                            displayToast(shiba2.getName() + " has fainted.",
                                     true);
                         }
                     }, 2000);
@@ -157,17 +160,17 @@ public class BattleActivity extends Activity {
 
         TextView actionPanel = findViewById(R.id.actionPanel);
         actionPanel.setText("What will " + shiba1.getName() + " do?");
-        
+
         TextView shiba1Name = findViewById(R.id.shiba1Name);
         shiba1Name.setText(shiba1.getName());
         TextView shiba1Level = findViewById(R.id.shiba1Level);
         shiba1Level.setText("Lv" + shiba1.getLevel());
         TextView shiba1HP = findViewById(R.id.shiba1HP);
         shiba1HP.setText("HP: " + shiba1.getCurrentHealth() + "/" + shiba1.getMaxHealth());
-
-
         View shiba1HPBarGreen = findViewById(R.id.shiba1HPBarGreen);
-        shiba1HPBarGreen.getLayoutParams().width = "";
+        shiba1HPBarGreen.getLayoutParams().width = dpToPx(hpBarWidth) *
+                shiba1.getCurrentHealth() / shiba1.getMaxHealth();
+        shiba1HPBarGreen.requestLayout();
 
         TextView shiba2Name = findViewById(R.id.shiba2Name);
         shiba2Name.setText(shiba2.getName());
@@ -175,5 +178,14 @@ public class BattleActivity extends Activity {
         shiba2Level.setText("Lv" + shiba2.getLevel());
         TextView shiba2HP = findViewById(R.id.shiba2HP);
         shiba2HP.setText("HP: " + shiba2.getCurrentHealth() + "/" + shiba2.getMaxHealth());
+        View shiba2HPBarGreen = findViewById(R.id.shiba2HPBarGreen);
+        shiba2HPBarGreen.getLayoutParams().width = dpToPx(hpBarWidth) *
+                shiba2.getCurrentHealth() / shiba2.getMaxHealth();
+        shiba2HPBarGreen.requestLayout();
+    }
+
+    public int dpToPx(int dp) {
+        float density = getApplicationContext().getResources().getDisplayMetrics().density;
+        return Math.round((float) dp * density);
     }
 }
