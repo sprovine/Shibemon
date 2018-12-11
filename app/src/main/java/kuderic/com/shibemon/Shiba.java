@@ -1,5 +1,14 @@
 package kuderic.com.shibemon;
 
+import android.util.Log;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
+
 import java.lang.Math;
 
 public class Shiba {
@@ -33,15 +42,51 @@ public class Shiba {
             gender = "female";
         }
 
-        level = random(1, 100);
+        level = random(35, 65);
 
-        maxHealth = level * random(1, 10);
+        maxHealth = level * random(6, 7);
         currentHealth = maxHealth;
 
         for (int i = 0; i < moves.length; i++) {
             moves[i] = new Move();
         }
+
+        String urlString = "https://api.iextrading.com/1.0/stock/AAPL/batch?types=quote\n";
+        System.out.println("Requesting Json from Shibe.online");
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                urlString,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(final JSONObject response) {
+                        System.out.println("Response received");
+                        System.out.println(response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(final VolleyError error) {
+                System.out.println(error.toString());
+            }
+        });
     }
+
+/**
+    private static JSONObject readJsonFromUrl(String url) throws IOException {
+        URLConnection connection = new URL(url).openConnection();
+        connection.setRequestProperty("Accept-Charset", "UTF-8");
+        InputStream response = connection.getInputStream();
+        try {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response, Charset.forName("UTF-8")));
+            JSONObject json = new JSONObject(jsonText);
+            return json;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            response.close();
+        }
+        return null;
+    }*/
 
     public void setCurrentHealth(int toHealth) {
         currentHealth = toHealth;
@@ -65,11 +110,14 @@ public class Shiba {
     public int getCurrentHealth() {
         return currentHealth;
     }
+    public int getMaxHealth() {
+        return maxHealth;
+    }
     public Move[] getMoves() {
         return moves;
     }
 
-    private int random(int min, int max) {
+    public int random(int min, int max) {
         int range = (max - min) + 1;
         return (int)(Math.random() * range) + min;
     }
@@ -77,7 +125,7 @@ public class Shiba {
     public class Move {
         private String name;
         private String[] names = {"Pound", "Double Slap", "Scratch", "Stomp", "Headbutt", "Slam",
-                "Bite", "Growl", "Lick"};
+                "Bite", "Growl", "Lick", "Flail", "Fake out", "Charge", "Yawn", "Tickle"};
 
         public String getName() {
             return name;
