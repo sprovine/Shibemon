@@ -117,7 +117,7 @@ public class Shiba {
         return moves;
     }
 
-    public int random(int min, int max) {
+    public static int random(int min, int max) {
         int range = (max - min) + 1;
         return (int)(Math.random() * range) + min;
     }
@@ -125,7 +125,8 @@ public class Shiba {
     public class Move {
         private String name;
         private String[] names = {"Pound", "Double Slap", "Scratch", "Stomp", "Headbutt", "Slam",
-                "Bite", "Growl", "Lick", "Flail", "Fake out", "Charge", "Yawn", "Tickle"};
+                "Bite", "Growl", "Lick", "Flail", "Fake out", "Charge", "Yawn", "Tickle",
+                "Mega Punch", "Nuzzle", "Tail Whip", "Quick Attack", "Roll Out"};
 
         public String getName() {
             return name;

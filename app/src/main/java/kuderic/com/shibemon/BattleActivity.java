@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -11,8 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class BattleActivity extends Activity {
-    Shiba shiba1;
-    Shiba shiba2;
+    private static boolean canAttack = true;
+    private Shiba shiba1;
+    private Shiba shiba2;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -20,16 +22,142 @@ public class BattleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_battle);
 
+
+        Button backMainButton = findViewById(R.id.backMainButton);
+        backMainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("Main page intent received");
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
         shiba1 = new Shiba();
         shiba2 = new Shiba();
 
-        System.out.println("Shiba names: ");
-        System.out.println(shiba1.getName());
-        System.out.println(shiba2.getName());
+        updateUI();
 
+        Button buttonMove1 = findViewById(R.id.move1);
+        buttonMove1.setText(shiba1.getMoves()[0].getName());
+        buttonMove1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shibaAttack(shiba1, shiba1.getMoves()[0]);
+            }
+        });
+        Button buttonMove2 = findViewById(R.id.move2);
+        buttonMove2.setText(shiba1.getMoves()[1].getName());
+        buttonMove2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shibaAttack(shiba1, shiba1.getMoves()[1]);
+            }
+        });
+        Button buttonMove3 = findViewById(R.id.move3);
+        buttonMove3.setText(shiba1.getMoves()[2].getName());
+        buttonMove3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shibaAttack(shiba1, shiba1.getMoves()[2]);
+            }
+        });
+        Button buttonMove4 = findViewById(R.id.move4);
+        buttonMove4.setText(shiba1.getMoves()[3].getName());
+        buttonMove4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shibaAttack(shiba1, shiba1.getMoves()[3]);
+            }
+        });
+    }
+
+    protected void shibaAttack(final Shiba shiba, final Shiba.Move move) {
+        System.out.println(shiba.getName() + " is attacking.");
+        if (!canAttack) {
+            System.out.println("cant attack");
+            return;
+        }
+        final int finalDamage = shiba.random(15, 25) * shiba.getLevel() / 10;
+
+        displayToast(shiba.getName() + " uses " + move.getName() + "!", true);
+        if (shiba == shiba1) {
+            shiba2.setCurrentHealth(shiba2.getCurrentHealth() - finalDamage);
+            System.out.println(shiba2.getName() + " health is " + shiba2.getCurrentHealth());
+        } else {
+            shiba1.setCurrentHealth(shiba1.getCurrentHealth() - finalDamage);
+            System.out.println(shiba1.getName() + " health is " + shiba1.getCurrentHealth());
+        }
+
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                displayToast("It does " + finalDamage + " damage!", true);
+                updateUI();
+                if (shiba2.getCurrentHealth() == 0) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayToast(shiba2.getName() + " has been defeated.",
+                                    true);
+                        }
+                    }, 2000);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            shiba2 = new Shiba();
+                            updateUI();
+                            displayToast("A wild " + shiba2.getName() + " has appeared!",
+                                    true);
+                        }
+                    }, 4000);
+                    return;
+                }
+                if (shiba == shiba1) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            canAttack = true;
+                            int rand = Shiba.random(0, 3);
+                            shibaAttack(shiba2, shiba2.getMoves()[rand]);
+                        }
+                    }, 2000);
+                }
+            }
+        },2000);
+    }
+
+    protected void displayToast(String message, boolean wait) {
+        Toast toast = Toast.makeText(getApplicationContext(), message,
+                Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+        if (wait) {
+            Thread toastThread = new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        canAttack = false;
+                        Thread.sleep(2000);
+                        canAttack = true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            toastThread.start();
+        }
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    protected void updateUI() {
 
         TextView actionPanel = findViewById(R.id.actionPanel);
         actionPanel.setText("What will " + shiba1.getName() + " do?");
+        
         TextView shiba1Name = findViewById(R.id.shiba1Name);
         shiba1Name.setText(shiba1.getName());
         TextView shiba1Level = findViewById(R.id.shiba1Level);
@@ -38,53 +166,14 @@ public class BattleActivity extends Activity {
         shiba1HP.setText("HP: " + shiba1.getCurrentHealth() + "/" + shiba1.getMaxHealth());
 
 
-        Button buttonMove1 = findViewById(R.id.move1);
-        buttonMove1.setText(shiba1.getMoves()[0].getName());
-        buttonMove1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shiba1Attack(shiba1.getMoves()[1]);
-            }
-        });
-        Button buttonMove2 = findViewById(R.id.move2);
-        buttonMove2.setText(shiba1.getMoves()[1].getName());
-        buttonMove2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shiba1Attack(shiba1.getMoves()[1]);
-            }
-        });
-        Button buttonMove3 = findViewById(R.id.move3);
-        buttonMove3.setText(shiba1.getMoves()[2].getName());
-        buttonMove3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shiba1Attack(shiba1.getMoves()[2]);
-            }
-        });
-        Button buttonMove4 = findViewById(R.id.move4);
-        buttonMove4.setText(shiba1.getMoves()[3].getName());
-        buttonMove4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shiba1Attack(shiba1.getMoves()[3]);
-            }
-        });
-    }
+        View shiba1HPBarGreen = findViewById(R.id.shiba1HPBarGreen);
+        shiba1HPBarGreen.getLayoutParams().width = "";
 
-    public void shiba1Attack(Shiba.Move move) {
-        int damage = shiba1.random(10, 20) * shiba1.getLevel() / 10;
-
-        System.out.println("Shiba 1 uses " + move.getName() + "!");
-        Toast toast = Toast.makeText(getApplicationContext(), "Shiba 1 uses " + move.getName() + "!",
-                Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.show();
-        shiba2.setCurrentHealth(shiba2.getCurrentHealth() - damage);
-        System.out.println("Shiba 2's health is " + shiba2.getCurrentHealth());
-    }
-
-    protected void updateUI() {
-
+        TextView shiba2Name = findViewById(R.id.shiba2Name);
+        shiba2Name.setText(shiba2.getName());
+        TextView shiba2Level = findViewById(R.id.shiba2Level);
+        shiba2Level.setText("Lv" + shiba2.getLevel());
+        TextView shiba2HP = findViewById(R.id.shiba2HP);
+        shiba2HP.setText("HP: " + shiba2.getCurrentHealth() + "/" + shiba2.getMaxHealth());
     }
 }

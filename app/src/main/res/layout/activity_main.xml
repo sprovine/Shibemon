@@ -4,32 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/shiba_background"
     tools:context=".MainActivity"
     tools:layout_editor_absoluteY="73dp">
 
     <ImageView
         android:id="@+id/imageTitle"
-        android:layout_width="190dp"
-        android:layout_height="0dp"
+        android:layout_width="253dp"
+        android:layout_height="81dp"
         android:layout_marginTop="173dp"
         android:layout_marginBottom="38dp"
         android:contentDescription="Shibemon"
         android:src="@drawable/shibemon"
-        app:layout_constraintBottom_toTopOf="@+id/playButton"
+        app:layout_constraintBottom_toTopOf="@+id/backMainButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/playButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/backMainButton"
+        android:layout_width="80dp"
+        android:layout_height="51dp"
         android:layout_marginBottom="199dp"
-        android:text="Play!"
-        android:textColor="@color/white"
         android:background="@color/light_blue"
+        android:text="PLAY!"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageTitle"/>
+        app:layout_constraintTop_toBottomOf="@+id/imageTitle" />
 </android.support.constraint.ConstraintLayout>

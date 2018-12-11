@@ -16,7 +16,7 @@ public class MainActivity extends Activity {
         System.out.println("App started");
 
         //Play button listener
-        Button playButton = findViewById(R.id.playButton);
+        Button playButton = findViewById(R.id.backMainButton);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
