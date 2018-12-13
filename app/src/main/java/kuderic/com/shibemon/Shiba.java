@@ -21,8 +21,11 @@ public class Shiba {
     private int level;
     private int maxHealth;
     private int currentHealth;
-    private int maxExp;
-    private int currentExp;
+    public int maxExp;
+    public int currentExp;
+    public int attack;
+    public int defence;
+    public String type;
     private Move[] moves = new Move[4];
 
     //Array of names to choose from
@@ -42,7 +45,13 @@ public class Shiba {
 
         level = toLevel;
 
-        currentHealth = maxHealth = 20 + level * random(4, 6);
+        currentHealth = maxHealth = 20;
+        for (int i = 0; i < level; i++) {
+            increaseStats();
+        }
+
+
+        maxExp = currentExp = 15 * level;
 
         for (int i = 0; i < moves.length; i++) {
             moves[i] = new Move();
@@ -74,6 +83,18 @@ public class Shiba {
             }
         });
 
+
+        rand = random(1, 3);
+        if (rand == 1) {
+            type = "fire";
+        }
+        if (rand == 2) {
+            type = "grass";
+        }
+        if (rand == 3) {
+            type = "fire";
+        }
+
         try {
             picture = PictureReader.generatePicture();
         } catch (IOException e) {
@@ -97,11 +118,27 @@ public class Shiba {
 
     public void increaseMaxHealth(int toHealth) {
         maxHealth += toHealth;
-        currentHealth += toHealth;
+        increaseCurrentHealth(toHealth);
     }
 
     public void increaseCurrentHealth(int toHealth) {
         setCurrentHealth(currentHealth + toHealth);
+    }
+
+    public void levelUp() {
+        while (currentExp >= maxExp) {
+            level++;
+            increaseStats();
+            currentExp -= maxExp;
+            maxExp += 15;
+        }
+
+    }
+
+    private void increaseStats() {
+        increaseMaxHealth(random(7, 9));
+        attack += random(5, 6);
+        defence += random(2, 3);
     }
 
     public String getName() {
@@ -135,6 +172,8 @@ public class Shiba {
 
     public class Move {
         private String name;
+        private String type;
+
         private String[] names = {"Pound", "Double Slap", "Scratch", "Stomp", "Headbutt", "Slam",
                 "Bite", "Growl", "Lick", "Flail", "Fake out", "Charge", "Yawn", "Tickle",
                 "Mega Punch", "Nuzzle", "Tail Whip", "Roll Out"};
@@ -142,10 +181,24 @@ public class Shiba {
         public String getName() {
             return name;
         }
+        public String getType() {
+            return type;
+        }
 
         public Move() {
             int rand = random(0, names.length - 1);
             name = names[rand];
+
+            rand = random(1, 3);
+            if (rand == 1) {
+                type = "fire";
+            }
+            if (rand == 2) {
+                type = "grass";
+            }
+            if (rand == 3) {
+                type = "water";
+            }
         }
     }
 }

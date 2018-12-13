@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ public class BattleActivity extends Activity {
     private Shiba shiba1;
     private Shiba shiba2;
     final static int hpBarWidth = 125; //in dp. use dpToPx() to find pixel ratio
-    final static double speedMultiplier = (double) 3.0; //how much faster everything plays
+    final static double speedMultiplier = (double) 1.5; //how much faster everything plays
     final static double timeMultiplier = 1 / speedMultiplier; //inverse multiplier for time actions take
 
 
@@ -54,8 +55,8 @@ public class BattleActivity extends Activity {
         });
 
         PictureReader.setContext(this);
-        shiba1 = createShiba(20);
-        shiba2 = createShiba(10);
+        shiba1 = createShiba(15);
+        shiba2 = createShiba(12);
         updateUI();
         updateImages();
         updateMoves();
@@ -67,12 +68,17 @@ public class BattleActivity extends Activity {
             return;
         }
         playBark();
-        final int finalDamage = shiba.random(15, 25) * shiba.getLevel() / 10;
 
         displayToast(shiba.getName() + " uses " + move.getName() + "!", true);
 
+        int damage = 0;
+        double damageMultiplier = 1;
+
         if (shiba == shiba1) {
-            shiba2.setCurrentHealth(shiba2.getCurrentHealth() - finalDamage);
+            damage = calculateDamage(shiba, shiba2, move);
+            damageMultiplier = calculateMultiplier(move.getType(), shiba2.type);
+
+            shiba2.setCurrentHealth(shiba2.getCurrentHealth() - damage);
 
             Animation anim = AnimationUtils.
                     loadAnimation(getApplicationContext(), R.anim.shiba1attackshiba2);
@@ -88,9 +94,11 @@ public class BattleActivity extends Activity {
                     findViewById(R.id.shiba1).startAnimation(anim);
                 }
             }, (long) (1200 * timeMultiplier));
-        }
-        if (shiba == shiba2) {
-            shiba1.setCurrentHealth(shiba1.getCurrentHealth() - finalDamage);
+        } else if (shiba == shiba2) {
+            damage = calculateDamage(shiba, shiba1, move);
+            damageMultiplier = calculateMultiplier(move.getType(), shiba2.type);
+
+            shiba1.setCurrentHealth(shiba1.getCurrentHealth() - damage);
 
             Animation anim = AnimationUtils.
                     loadAnimation(getApplicationContext(), R.anim.shiba2attackshiba1);
@@ -108,12 +116,19 @@ public class BattleActivity extends Activity {
             }, (long) (1200 * timeMultiplier));
         }
 
+        final double finalDamageMultiplier = damageMultiplier;
+        final int finalDamage = damage;
         new Handler().postDelayed(new Runnable()
         {
             @Override
-            public void run()
-            {
-                displayToast("It does " + finalDamage + " damage!", true);
+            public void run() {
+                String message = "It does " + finalDamage + " damage!";
+                if (finalDamageMultiplier == .75) {
+                    message += "\nIt wasn't very effective.";
+                } else if (finalDamageMultiplier == 1.25) {
+                    message += "\nIt was super effective!";
+                }
+                displayToast(message, true);
                 updateUI();
                 if (shiba2.getCurrentHealth() == 0) {
                     shiba2Died();
@@ -121,7 +136,7 @@ public class BattleActivity extends Activity {
                     playWhimper();
                     Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
                     startActivity(intent);
-                } else if (shiba == shiba1) {//Let shiba2 attack
+                } else if (shiba == shiba1) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -133,6 +148,39 @@ public class BattleActivity extends Activity {
                 }
             }
         },(long) (2000 * timeMultiplier));
+    }
+
+    private int calculateDamage(Shiba shiba1, Shiba shiba2, Shiba.Move move) {
+        int damage = Shiba.random(85, 115) * shiba1.attack / 100;
+        double damageMultiplier = calculateMultiplier(move.getType(), shiba2.type);
+        int calc = (int) (damage * damageMultiplier) - shiba2.defence;
+        if (calc < 0) {
+            return 0;
+        }
+        return calc;
+    }
+
+    private double calculateMultiplier(String type, String type1) {
+        if (type.equals("fire")) {
+            if (type1.equals("water")) {
+                return 0.75;
+            } else if (type1.equals("grass")) {
+                return 1.25;
+            }
+        } else if (type.equals("water")) {
+            if (type1.equals("grass")) {
+                return 0.75;
+            } else if (type1.equals("fire")) {
+                return 1.25;
+            }
+        } else if (type.equals("grass")) {
+            if (type1.equals("fire")) {
+                return 0.75;
+            } else if (type1.equals("water")) {
+                return 1.25;
+            }
+        }
+        return 1;
     }
 
     protected void displayToast(String message, boolean wait) {
@@ -169,6 +217,9 @@ public class BattleActivity extends Activity {
                 shiba1.getCurrentHealth() / shiba1.getMaxHealth();
         shiba1HPBarGreen.requestLayout();
 
+        LinearLayout shiba1Info = findViewById(R.id.shiba1Info);
+        setBackgroundType(shiba1Info, shiba1);
+
         TextView shiba2Name = findViewById(R.id.shiba2Name);
         shiba2Name.setText(shiba2.getName());
         TextView shiba2Level = findViewById(R.id.shiba2Level);
@@ -179,6 +230,9 @@ public class BattleActivity extends Activity {
         shiba2HPBarGreen.getLayoutParams().width = dpToPx(hpBarWidth) *
                 shiba2.getCurrentHealth() / shiba2.getMaxHealth();
         shiba2HPBarGreen.requestLayout();
+        
+        LinearLayout shiba2Info = findViewById(R.id.shiba2Info);
+        setBackgroundType(shiba2Info, shiba2);
     }
 
     private void updateImages() {
@@ -197,6 +251,7 @@ public class BattleActivity extends Activity {
     private void updateMoves() {
         Button buttonMove1 = findViewById(R.id.move1);
         buttonMove1.setText(shiba1.getMoves()[0].getName());
+        setBackgroundType(buttonMove1, shiba1.getMoves()[0]);
         buttonMove1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,6 +260,7 @@ public class BattleActivity extends Activity {
         });
         Button buttonMove2 = findViewById(R.id.move2);
         buttonMove2.setText(shiba1.getMoves()[1].getName());
+        setBackgroundType(buttonMove2, shiba1.getMoves()[1]);
         buttonMove2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,6 +269,7 @@ public class BattleActivity extends Activity {
         });
         Button buttonMove3 = findViewById(R.id.move3);
         buttonMove3.setText(shiba1.getMoves()[2].getName());
+        setBackgroundType(buttonMove3, shiba1.getMoves()[2]);
         buttonMove3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,12 +278,32 @@ public class BattleActivity extends Activity {
         });
         Button buttonMove4 = findViewById(R.id.move4);
         buttonMove4.setText(shiba1.getMoves()[3].getName());
+        setBackgroundType(buttonMove4, shiba1.getMoves()[3]);
         buttonMove4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shibaAttack(shiba1, shiba1.getMoves()[3]);
             }
         });
+    }
+
+    public void setBackgroundType(Button button, Shiba.Move move) {
+        if (move.getType().equals("fire")) {
+            button.setBackgroundResource(R.drawable.fire);
+        } else if (move.getType().equals("water")) {
+            button.setBackgroundResource(R.drawable.water);
+        } else if (move.getType().equals("grass")) {
+            button.setBackgroundResource(R.drawable.grass);
+        }
+    }
+    public void setBackgroundType(LinearLayout layout, Shiba shiba) {
+        if (shiba.type.equals("fire")) {
+            layout.setBackgroundResource(R.drawable.fire);
+        } else if (shiba.type.equals("water")) {
+            layout.setBackgroundResource(R.drawable.water);
+        } else if (shiba.type.equals("grass")) {
+            layout.setBackgroundResource(R.drawable.grass);
+        }
     }
 
     public int dpToPx(int dp) {
