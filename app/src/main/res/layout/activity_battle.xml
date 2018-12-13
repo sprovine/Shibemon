@@ -267,6 +267,16 @@
             android:text="HP:114/114"
             android:typeface="monospace" />
 
+        <View
+            android:id="@+id/shiba1XPBar"
+            android:layout_width="150dp"
+            android:layout_height="7dp"
+            android:paddingTop="3dp"
+            android:layout_gravity="end"
+            android:background="@drawable/blue_rectangle"
+            tools:layout_editor_absoluteX="208dp"
+            tools:layout_editor_absoluteY="295dp" />
+
     </LinearLayout>
 
     <LinearLayout

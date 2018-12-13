@@ -55,8 +55,8 @@ public class BattleActivity extends Activity {
         });
 
         PictureReader.setContext(this);
-        shiba1 = createShiba(15);
-        shiba2 = createShiba(12);
+        shiba1 = new Shiba(15);
+        shiba2 = createShiba2(14);
         updateUI();
         updateImages();
         updateMoves();
@@ -151,9 +151,9 @@ public class BattleActivity extends Activity {
     }
 
     private int calculateDamage(Shiba shiba1, Shiba shiba2, Shiba.Move move) {
-        int damage = Shiba.random(85, 115) * shiba1.attack / 100;
+        int damage = Shiba.random(90, 100) * shiba1.attack / 100;
         double damageMultiplier = calculateMultiplier(move.getType(), shiba2.type);
-        int calc = (int) (damage * damageMultiplier) - shiba2.defence;
+        int calc = (int) ((damage - (int) (shiba2.defence * .8)) * damageMultiplier);
         if (calc < 0) {
             return 0;
         }
@@ -311,7 +311,7 @@ public class BattleActivity extends Activity {
         return Math.round((float) dp * density);
     }
 
-    private Shiba createShiba(int level) {
+    private Shiba createShiba2(int level) {
         return new Shiba(level);
     }
 
@@ -328,7 +328,7 @@ public class BattleActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                shiba2 = createShiba(10);
+                shiba2 = createShiba2(10);
                 updateImages();
                 updateUI();
                 displayToast("A wild " + shiba2.getName() + " has appeared!",
