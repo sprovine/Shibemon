@@ -41,8 +41,9 @@ public class BattleActivity extends Activity {
             }
         });
 
-        shiba1 = new Shiba();
-        shiba2 = new Shiba();
+        PictureReader.setContext(this);
+        shiba1 = createShiba();
+        shiba2 = createShiba();
 
         updateUI();
 
@@ -89,6 +90,7 @@ public class BattleActivity extends Activity {
         final int finalDamage = shiba.random(15, 25) * shiba.getLevel() / 10;
 
         displayToast(shiba.getName() + " uses " + move.getName() + "!", true);
+
         if (shiba == shiba1) {
             shiba2.setCurrentHealth(shiba2.getCurrentHealth() - finalDamage);
             System.out.println(shiba2.getName() + " health is " + shiba2.getCurrentHealth());
@@ -138,7 +140,7 @@ public class BattleActivity extends Activity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            shiba2 = new Shiba();
+                            shiba2 = createShiba();
                             updateUI();
                             displayToast("A wild " + shiba2.getName() + " has appeared!",
                                     true);
@@ -170,19 +172,13 @@ public class BattleActivity extends Activity {
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.show();
         if (wait) {
-            Thread toastThread = new Thread(){
+            canAttack = false;
+            new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        canAttack = false;
-                        Thread.sleep(2000);
-                        canAttack = true;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    canAttack = true;
                 }
-            };
-            toastThread.start();
+            }, 2000);
         }
     }
 
@@ -221,7 +217,8 @@ public class BattleActivity extends Activity {
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher_round)
-                .error(R.mipmap.ic_launcher_round);
+                .error(R.mipmap.ic_launcher_round)
+                .skipMemoryCache(true);
 
         Glide.with(this).load(shiba1.getPicture()).apply(options)
                 .into((ImageView) findViewById(R.id.shiba1));
@@ -232,5 +229,9 @@ public class BattleActivity extends Activity {
     public int dpToPx(int dp) {
         float density = getApplicationContext().getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
+    }
+
+    private Shiba createShiba() {
+        return new Shiba();
     }
 }
