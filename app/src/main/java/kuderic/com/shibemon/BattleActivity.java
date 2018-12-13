@@ -345,15 +345,14 @@ public class BattleActivity extends Activity {
         shiba1.currentExp += expGained;
         shiba1.gold += goldGained;
 
-        final String saveName = shiba2.getName();
-        shiba2 = createShiba2();
+        final Shiba newShiba = createShiba2();
 
         playWhimper();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 updateUI();
-                displayToast(saveName + " has fainted." +
+                displayToast(shiba2.getName() + " has fainted." +
                                 "\n" +shiba1.getName() + " has gained " + expGained + " exp!" +
                                 "\n You get " + goldGained + " gold!",
                         true);
@@ -377,7 +376,7 @@ public class BattleActivity extends Activity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    shiba2 = createShiba2();
+                    shiba2 = newShiba;
                     updateImages();
                     updateUI();
                     displayToast("A wild " + shiba2.getName() + " has appeared!",
@@ -388,6 +387,7 @@ public class BattleActivity extends Activity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    shiba2 = newShiba;
                     updateImages();
                     updateUI();
                     displayToast("A wild " + shiba2.getName() + " has appeared!",

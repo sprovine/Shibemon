@@ -40,6 +40,7 @@ public class ShopActivity extends Activity {
             }
         });
 
+
         Button fetchButton = findViewById(R.id.buttonShopFetch);
         fetchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +50,7 @@ public class ShopActivity extends Activity {
                 startActivity(intent);
             }
         });
+        fetchButton.setVisibility(View.INVISIBLE);
 
         updateUI();
     }
