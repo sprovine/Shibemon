@@ -61,7 +61,7 @@ public class ShopActivity extends Activity {
         buttonMove1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (shiba1.gold >= cost2){
+                if (shiba1.gold >= cost1){
                     shiba1.gold -= cost1;
                     shiba1.setCurrentHealth(shiba1.getMaxHealth());
                     displayToast(shiba1.getName() + " has been healed!");
@@ -93,7 +93,7 @@ public class ShopActivity extends Activity {
         buttonMove3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (shiba1.gold >= cost2){
+                if (shiba1.gold >= cost3){
                     shiba1.gold -= cost3;
                     shiba1.defence++;
                     displayToast(shiba1.getName() + "has gained 3 defence!");
@@ -109,7 +109,7 @@ public class ShopActivity extends Activity {
         buttonMove4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (shiba1.gold >= cost2){
+                if (shiba1.gold >= cost4){
                     shiba1.increaseMaxHealth(10);
                     shiba1.gold -= cost4;
                     displayToast(shiba1.getName() + "has gained 10 Max HP!");
@@ -125,10 +125,10 @@ public class ShopActivity extends Activity {
     }
 
     private void updateCosts() {
-        cost1 = (shiba1.getMaxHealth() - shiba1.getCurrentHealth()) / 2;
+        cost1 = (shiba1.getMaxHealth() - shiba1.getCurrentHealth());
         cost2 = shiba1.attack * 2;
         cost3 = shiba1.defence * 3;
-        cost4 = shiba1.getMaxHealth() / 2;
+        cost4 = shiba1.getMaxHealth();
     }
 
     private void bundleShibas(Intent intent) {

@@ -43,7 +43,7 @@
 
     <TextView
         android:id="@+id/shop"
-        android:layout_width="wrap_content"
+        android:layout_width="91dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="149dp"
         android:layout_marginLeft="149dp"
