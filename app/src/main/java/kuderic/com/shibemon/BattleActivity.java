@@ -340,6 +340,7 @@ public class BattleActivity extends Activity {
 
     private void shiba2Died() {
         final int expGained = shiba2.getLevel() * 13;
+        final int goldGained = shiba2.getLevel() * 9;
         shiba1.currentExp += expGained;
 
         playWhimper();
@@ -348,7 +349,8 @@ public class BattleActivity extends Activity {
             public void run() {
                 updateUI();
                 displayToast(shiba2.getName() + " has fainted." +
-                                "\n" +shiba1.getName() + " has gained " + expGained + " exp!",
+                                "\n" +shiba1.getName() + " has gained " + expGained + " exp!" +
+                                "\n You get " + goldGained + " gold!",
                         true);
             }
         }, (long) (2000 * timeMultiplier));

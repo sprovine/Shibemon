@@ -10,44 +10,120 @@
 
     <Button
         android:id="@+id/backShopButton"
-        android:layout_width="138dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="213dp"
-        android:background="@color/light_blue"
+        android:layout_width="0dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="223dp"
+        android:layout_marginRight="223dp"
+        android:background="@drawable/main_button"
         android:text="BACK"
         android:textColor="@color/white"
         android:typeface="monospace"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonShopFetch"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonShopFetch" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonShopFetch"
-        android:layout_width="138dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="203dp"
         android:layout_marginEnd="11dp"
         android:layout_marginRight="11dp"
-        android:layout_marginTop="31dp"
-        android:background="@color/light_blue"
+        android:background="@drawable/main_button"
         android:text="Fetch"
         android:textColor="@color/white"
         android:typeface="monospace"
-        app:layout_constraintBottom_toTopOf="@+id/backShopButton"
+        app:layout_constraintBottom_toBottomOf="@+id/backShopButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/shop"
+        app:layout_constraintTop_toTopOf="@+id/backShopButton"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/shop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="206dp"
+        android:layout_marginStart="149dp"
+        android:layout_marginLeft="149dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="71dp"
+        android:layout_marginRight="71dp"
         android:text="SHOP"
         android:textSize="36sp"
         android:textStyle="italic"
         android:typeface="monospace"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonShopFetch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/gold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GOLD: "
+        android:textSize="24sp"
+        android:typeface="monospace"
+        app:layout_constraintStart_toStartOf="@+id/shop"
+        app:layout_constraintTop_toBottomOf="@+id/shop" />
+
+    <LinearLayout
+        android:id="@+id/shopLayout"
+        android:layout_width="0dp"
+        android:layout_height="353dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginLeft="43dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="43dp"
+        android:layout_marginRight="43dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/panel_background1"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shop">
+
+        <Button
+            android:id="@+id/buttonHeal"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="17dp"
+            android:background="@drawable/main_button"
+            android:text="HEAL"
+            android:textColor="@color/white"
+            android:typeface="monospace" />
+
+        <Button
+            android:id="@+id/buttonMaxHPUp"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="17dp"
+            android:background="@drawable/main_button"
+            android:text="MAX HP+"
+            android:textColor="@color/white"
+            android:typeface="monospace" />
+
+        <Button
+            android:id="@+id/buttonAttackUp"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="17dp"
+            android:background="@drawable/main_button"
+            android:text="ATTACK+"
+            android:textColor="@color/white"
+            android:typeface="monospace" />
+
+        <Button
+            android:id="@+id/buttonDefenseUp"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="17dp"
+            android:background="@drawable/main_button"
+            android:text="DEFENSE+"
+            android:textColor="@color/white"
+            android:typeface="monospace" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

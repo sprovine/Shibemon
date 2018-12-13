@@ -23,6 +23,7 @@ public class Shiba implements Serializable {
     public int currentExp;
     public int attack;
     public int defence;
+    public int gold;
     public String type;
     private Move[] moves = new Move[4];
 
