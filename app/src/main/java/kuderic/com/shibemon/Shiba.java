@@ -51,7 +51,8 @@ public class Shiba {
         }
 
 
-        maxExp = currentExp = 15 * level;
+        maxExp = 15 * level;
+        currentExp = 0;
 
         for (int i = 0; i < moves.length; i++) {
             moves[i] = new Move();
@@ -125,14 +126,16 @@ public class Shiba {
         setCurrentHealth(currentHealth + toHealth);
     }
 
-    public void levelUp() {
+    public boolean levelUp() {
+        boolean bool = false;
         while (currentExp >= maxExp) {
+            bool = true;
             level++;
             increaseStats();
             currentExp -= maxExp;
             maxExp += 15;
         }
-
+        return bool;
     }
 
     private void increaseStats() {

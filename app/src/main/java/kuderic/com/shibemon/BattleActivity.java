@@ -25,6 +25,7 @@ public class BattleActivity extends Activity {
     private Shiba shiba1;
     private Shiba shiba2;
     final static int hpBarWidth = 125; //in dp. use dpToPx() to find pixel ratio
+    final static int expBarWidth = 173; //in dp. use dpToPx() to find pixel ratio
     final static double speedMultiplier = (double) 1.5; //how much faster everything plays
     final static double timeMultiplier = 1 / speedMultiplier; //inverse multiplier for time actions take
 
@@ -56,7 +57,7 @@ public class BattleActivity extends Activity {
 
         PictureReader.setContext(this);
         shiba1 = new Shiba(15);
-        shiba2 = createShiba2(14);
+        shiba2 = createShiba2();
         updateUI();
         updateImages();
         updateMoves();
@@ -217,6 +218,14 @@ public class BattleActivity extends Activity {
                 shiba1.getCurrentHealth() / shiba1.getMaxHealth();
         shiba1HPBarGreen.requestLayout();
 
+        View shiba1ExpBar = findViewById(R.id.shiba1XPBar);
+        int newWidth = dpToPx(expBarWidth) * shiba1.currentExp / shiba1.maxExp;
+        if (newWidth > dpToPx(expBarWidth)) {
+            newWidth = dpToPx(expBarWidth);
+        }
+        shiba1ExpBar.getLayoutParams().width = newWidth;
+        shiba1ExpBar.requestLayout();
+
         LinearLayout shiba1Info = findViewById(R.id.shiba1Info);
         setBackgroundType(shiba1Info, shiba1);
 
@@ -311,30 +320,59 @@ public class BattleActivity extends Activity {
         return Math.round((float) dp * density);
     }
 
-    private Shiba createShiba2(int level) {
-        return new Shiba(level);
+    private Shiba createShiba2() {
+        return new Shiba(shiba1.getLevel() * Shiba.random(70, 90) / 100);
     }
 
     private void shiba2Died() {
+        final int expGained = shiba2.getLevel() * 13;
+        shiba1.currentExp += expGained;
 
         playWhimper();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                displayToast(shiba2.getName() + " has fainted.",
+                updateUI();
+                displayToast(shiba2.getName() + " has fainted." +
+                                "\n" +shiba1.getName() + " has gained " + expGained + " exp!",
                         true);
             }
         }, (long) (2000 * timeMultiplier));
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                shiba2 = createShiba2(10);
-                updateImages();
-                updateUI();
-                displayToast("A wild " + shiba2.getName() + " has appeared!",
-                        true);
-            }
-        }, (long) (4000 * timeMultiplier));
+
+        //Check for level up
+        if (shiba1.levelUp()) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateUI();
+                    displayToast(shiba1.getName() + " has leveled up." +
+                                    "\n" +shiba1.getName() + " has gained 6 attack!",
+                            true);
+                }
+            }, (long) (4000 * timeMultiplier));
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    shiba2 = createShiba2();
+                    updateImages();
+                    updateUI();
+                    displayToast("A wild " + shiba2.getName() + " has appeared!",
+                            true);
+                }
+            }, (long) (6000 * timeMultiplier));
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    shiba2 = createShiba2();
+                    updateImages();
+                    updateUI();
+                    displayToast("A wild " + shiba2.getName() + " has appeared!",
+                            true);
+                }
+            }, (long) (4000 * timeMultiplier));
+        }
     }
 
     private void playWhimper() {
