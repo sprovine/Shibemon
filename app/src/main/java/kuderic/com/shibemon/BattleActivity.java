@@ -40,15 +40,17 @@ public class BattleActivity extends Activity {
 
         System.out.println("time multiplier is " + timeMultiplier);
 
-        try {
-            Intent intent = this.getIntent();
-            Bundle bundle = intent.getExtras();
-            Shiba shiba1 = (Shiba) bundle.getSerializable("SHIBA1");
-            Shiba shiba2 = (Shiba) bundle.getSerializable("SHIBA2");
-        } catch (Exception e) {
+        if (this.getIntent().getExtras() == null) {
             PictureReader.setContext(this);
             shiba1 = new Shiba(15);
             shiba2 = createShiba2();
+            System.out.println("Shibas created");
+        } else {
+            Intent intent = this.getIntent();
+            Bundle bundle = intent.getExtras();
+            shiba1 = (Shiba) bundle.getSerializable("SHIBA1");
+            shiba2 = (Shiba) bundle.getSerializable("SHIBA2");
+            System.out.println("Shibas unbundled");
         }
         updateUI();
         updateImages();

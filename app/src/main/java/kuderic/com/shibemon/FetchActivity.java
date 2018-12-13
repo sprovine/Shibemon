@@ -19,8 +19,8 @@ public class FetchActivity extends Activity {
 
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
-        Shiba shiba1 = (Shiba) bundle.getSerializable("SHIBA1");
-        Shiba shiba2 = (Shiba) bundle.getSerializable("SHIBA2");
+        shiba1 = (Shiba) bundle.getSerializable("SHIBA1");
+        shiba2 = (Shiba) bundle.getSerializable("SHIBA2");
 
         //Play button listener
         Button playButton = findViewById(R.id.backFetchButton);
