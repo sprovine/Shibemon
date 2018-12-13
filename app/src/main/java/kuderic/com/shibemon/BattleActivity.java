@@ -342,6 +342,7 @@ public class BattleActivity extends Activity {
         final int expGained = shiba2.getLevel() * 13;
         final int goldGained = shiba2.getLevel() * 9;
         shiba1.currentExp += expGained;
+        shiba1.gold += goldGained;
 
         playWhimper();
         new Handler().postDelayed(new Runnable() {
@@ -441,8 +442,8 @@ public class BattleActivity extends Activity {
 
     private void bundleShibas(Intent intent) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("SHIBA1", (Serializable) shiba1);
-        bundle.putSerializable("SHIBA2", (Serializable) shiba2);
+        bundle.putSerializable("SHIBA1", shiba1);
+        bundle.putSerializable("SHIBA2", shiba2);
         intent.putExtras(bundle);
     }
 }

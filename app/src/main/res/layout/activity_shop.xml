@@ -62,9 +62,10 @@
         android:id="@+id/gold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GOLD: "
+        android:text="GOLD: 0"
         android:textSize="24sp"
         android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="@+id/shop"
         app:layout_constraintStart_toStartOf="@+id/shop"
         app:layout_constraintTop_toBottomOf="@+id/shop" />
 
@@ -87,41 +88,41 @@
 
         <Button
             android:id="@+id/buttonHeal"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="17dp"
             android:background="@drawable/main_button"
-            android:text="HEAL"
+            android:text="HEAL (10 GOLD)"
             android:textColor="@color/white"
             android:typeface="monospace" />
 
         <Button
             android:id="@+id/buttonMaxHPUp"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="17dp"
             android:background="@drawable/main_button"
-            android:text="MAX HP+"
+            android:text="MAX HP+ (10 GOLD)"
             android:textColor="@color/white"
             android:typeface="monospace" />
 
         <Button
             android:id="@+id/buttonAttackUp"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="17dp"
             android:background="@drawable/main_button"
-            android:text="ATTACK+"
+            android:text="ATTACK+ (10 GOLD)"
             android:textColor="@color/white"
             android:typeface="monospace" />
 
         <Button
             android:id="@+id/buttonDefenseUp"
-            android:layout_width="180dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="17dp"
             android:background="@drawable/main_button"
-            android:text="DEFENSE+"
+            android:text="DEFENSE+ (10 GOLD)"
             android:textColor="@color/white"
             android:typeface="monospace" />
     </LinearLayout>

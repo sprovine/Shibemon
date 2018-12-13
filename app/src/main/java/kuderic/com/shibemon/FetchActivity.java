@@ -36,8 +36,8 @@ public class FetchActivity extends Activity {
 
     private void bundleShibas(Intent intent) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable("SHIBA1", (Serializable) shiba1);
-        bundle.putSerializable("SHIBA2", (Serializable) shiba2);
+        bundle.putSerializable("SHIBA1", shiba1);
+        bundle.putSerializable("SHIBA2", shiba2);
         intent.putExtras(bundle);
     }
 }
