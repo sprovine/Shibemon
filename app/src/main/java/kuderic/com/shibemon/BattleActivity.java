@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +24,8 @@ public class BattleActivity extends Activity {
     private Shiba shiba1;
     private Shiba shiba2;
     final static int hpBarWidth = 125; //in dp. use dpToPx() to find pixel ratio
+    final static double speedMultiplier = (double) 3.0; //how much faster everything plays
+    final static double timeMultiplier = 1 / speedMultiplier; //inverse multiplier for time actions take
 
 
     @SuppressLint("SetTextI18n")
@@ -31,20 +34,28 @@ public class BattleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_battle);
 
+        System.out.println("time multiplier is " + timeMultiplier);
 
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Main page intent received");
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button shopButton = findViewById(R.id.buttonBattleShop);
+        shopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ShopActivity.class);
                 startActivity(intent);
             }
         });
 
         PictureReader.setContext(this);
-        shiba1 = createShiba();
-        shiba2 = createShiba();
+        shiba1 = createShiba(20);
+        shiba2 = createShiba(10);
         updateUI();
         updateImages();
         updateMoves();
@@ -52,10 +63,10 @@ public class BattleActivity extends Activity {
 
     protected void shibaAttack(final Shiba shiba, final Shiba.Move move) {
         if (!canAttack) {
-            playBark();
             System.out.println("cant attack");
             return;
         }
+        playBark();
         final int finalDamage = shiba.random(15, 25) * shiba.getLevel() / 10;
 
         displayToast(shiba.getName() + " uses " + move.getName() + "!", true);
@@ -63,29 +74,38 @@ public class BattleActivity extends Activity {
         if (shiba == shiba1) {
             shiba2.setCurrentHealth(shiba2.getCurrentHealth() - finalDamage);
 
-            findViewById(R.id.shiba1).startAnimation(AnimationUtils.
-                    loadAnimation(getApplicationContext(), R.anim.shiba1attackshiba2));
+            Animation anim = AnimationUtils.
+                    loadAnimation(getApplicationContext(), R.anim.shiba1attackshiba2);
+            anim.setDuration((long) (anim.getDuration() * timeMultiplier));
+            findViewById(R.id.shiba1).startAnimation(anim);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    findViewById(R.id.shiba1).startAnimation(AnimationUtils.
-                            loadAnimation(getApplicationContext(), R.anim.shiba1attackshiba2part2));
+                    Animation anim = AnimationUtils.
+                            loadAnimation(getApplicationContext(), R.anim.shiba1attackshiba2part2);
+                    anim.setDuration((long) (anim.getDuration() * timeMultiplier));
+                    findViewById(R.id.shiba1).startAnimation(anim);
                 }
-            }, 1200);
-        } else {
+            }, (long) (1200 * timeMultiplier));
+        }
+        if (shiba == shiba2) {
             shiba1.setCurrentHealth(shiba1.getCurrentHealth() - finalDamage);
 
-            findViewById(R.id.shiba2).startAnimation(AnimationUtils.
-                    loadAnimation(getApplicationContext(), R.anim.shiba2attackshiba1));
+            Animation anim = AnimationUtils.
+                    loadAnimation(getApplicationContext(), R.anim.shiba2attackshiba1);
+            anim.setDuration((long) (anim.getDuration() * timeMultiplier));
+            findViewById(R.id.shiba2).startAnimation(anim);
 
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    findViewById(R.id.shiba2).startAnimation(AnimationUtils.
-                            loadAnimation(getApplicationContext(), R.anim.shiba2attackshiba1part2));
+                    Animation anim = AnimationUtils.
+                            loadAnimation(getApplicationContext(), R.anim.shiba2attackshiba1part2);
+                    anim.setDuration((long) (anim.getDuration() * timeMultiplier));
+                    findViewById(R.id.shiba2).startAnimation(anim);
                 }
-            }, 1200);
+            }, (long) (1200 * timeMultiplier));
         }
 
         new Handler().postDelayed(new Runnable()
@@ -109,10 +129,10 @@ public class BattleActivity extends Activity {
                             int rand = Shiba.random(0, 3);
                             shibaAttack(shiba2, shiba2.getMoves()[rand]);
                         }
-                    }, 2000);
+                    }, (long) (2000 * timeMultiplier));
                 }
             }
-        },2000);
+        },(long) (2000 * timeMultiplier));
     }
 
     protected void displayToast(String message, boolean wait) {
@@ -127,7 +147,7 @@ public class BattleActivity extends Activity {
                 public void run() {
                     canAttack = true;
                 }
-            }, 2000);
+            }, (long) (2000 * timeMultiplier));
         }
     }
 
@@ -214,8 +234,8 @@ public class BattleActivity extends Activity {
         return Math.round((float) dp * density);
     }
 
-    private Shiba createShiba() {
-        return new Shiba();
+    private Shiba createShiba(int level) {
+        return new Shiba(level);
     }
 
     private void shiba2Died() {
@@ -227,16 +247,17 @@ public class BattleActivity extends Activity {
                 displayToast(shiba2.getName() + " has fainted.",
                         true);
             }
-        }, 2000);
+        }, (long) (2000 * timeMultiplier));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                shiba2 = createShiba();
+                shiba2 = createShiba(10);
                 updateImages();
+                updateUI();
                 displayToast("A wild " + shiba2.getName() + " has appeared!",
                         true);
             }
-        }, 4000);
+        }, (long) (4000 * timeMultiplier));
     }
 
     private void playWhimper() {
@@ -251,13 +272,18 @@ public class BattleActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mp.stop();
-                mp.release();
+                if (mp != null) {
+                    if (mp.isPlaying()) {
+                        mp.stop();
+                    }
+                    mp.reset();
+                }
             }
         }, endAfter);
     }
 
     private void playBark() {
+        System.out.println("playing bark");
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.bark1);
 
         new Handler().postDelayed(new Runnable() {
@@ -270,8 +296,12 @@ public class BattleActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mp.stop();
-                mp.release();
+                if (mp != null) {
+                    if (mp.isPlaying()) {
+                        mp.stop();
+                    }
+                    mp.reset();
+                }
             }
         }, 2000);
     }

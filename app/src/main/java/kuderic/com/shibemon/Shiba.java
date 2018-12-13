@@ -17,11 +17,12 @@ import java.util.ArrayList;
 
 public class Shiba {
     private String name;
-    private String gender;
     private String picture;
     private int level;
     private int maxHealth;
     private int currentHealth;
+    private int maxExp;
+    private int currentExp;
     private Move[] moves = new Move[4];
 
     //Array of names to choose from
@@ -35,24 +36,17 @@ public class Shiba {
             "Minnie", "Holly", "Missy", "Sugar", "Shelby", "Nova", "Leia", "Josie", "Penelope",
             "Ava", "Gigi", "Peanut", "Fiona", "Cleo", "Jasmine", "Sandy", "Mocha", "Taco"};
 
-    public Shiba() {
+    public Shiba(int toLevel) {
         int rand = random(0, names.length - 1);
         name = names[rand];
 
-        if (random(0, 1) == 1) {
-            gender = "male";
-        } else {
-            gender = "female";
-        }
+        level = toLevel;
 
-        level = random(35, 65);
-
-        maxHealth = level * random(6, 7);
-        currentHealth = maxHealth;
+        currentHealth = maxHealth = 20 + level * random(4, 6);
 
         for (int i = 0; i < moves.length; i++) {
             moves[i] = new Move();
-            //Check if name is taken. If taken, try again.
+            //Check if move is already taken. If taken, try again.
             for (int j = 0; j < i; j++) {
                 if (moves[i].getName().equals(moves[j].getName())) {
                     i--;
@@ -92,6 +86,22 @@ public class Shiba {
         if (currentHealth < 0) {
             currentHealth = 0;
         }
+        if (currentHealth > maxHealth) {
+            currentHealth = maxHealth;
+        }
+    }
+
+    public void setMaxHealth(int toHealth) {
+        maxHealth = toHealth;
+    }
+
+    public void increaseMaxHealth(int toHealth) {
+        maxHealth += toHealth;
+        currentHealth += toHealth;
+    }
+
+    public void increaseCurrentHealth(int toHealth) {
+        setCurrentHealth(currentHealth + toHealth);
     }
 
     public String getName() {
@@ -100,10 +110,6 @@ public class Shiba {
 
     public String getPicture() {
         return picture;
-    }
-
-    public String getGender() {
-        return gender;
     }
 
     public int getLevel() {

@@ -21,14 +21,14 @@ public class PictureReader {
         String line = reader.readLine();
 
         while (line != null) {
-            System.out.println(line);
+            //System.out.println(line);
             lines.add(line);
             line = reader.readLine();
         }
         reader.close();
 
         int rand = Shiba.random(0, lines.size() - 1);
-        System.out.println(lines.get(rand));
+        //System.out.println(lines.get(rand));
         return lines.get(rand);
     }
 }

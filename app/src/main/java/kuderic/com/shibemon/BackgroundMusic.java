@@ -14,21 +14,21 @@ public class BackgroundMusic extends Service {
     public void onCreate(){
         super.onCreate();
         Log.d(LOGCAT, "Service Started!");
-        objPlayer = MediaPlayer.create(this,R.raw.doodlebob);
+        objPlayer = MediaPlayer.create(this,R.raw.chiptune);
         int maxVolume = 100;
         int currVolume = 50;
         float log1 = (float)(Math.log(maxVolume - currVolume)/Math.log(maxVolume));
         objPlayer.setVolume(1 - log1, 1 - log1);
+        objPlayer.setLooping(true);
     }
 
-    @SuppressLint("WrongConstant")
     public int onStartCommand(Intent intent, int flags, int startId){
         objPlayer.start();
         Log.d(LOGCAT, "Media Player started!");
         if(objPlayer.isLooping() != true){
             Log.d(LOGCAT, "Problem in Playing Audio");
         }
-        return 1;
+        return Service.START_STICKY;
     }
 
     public void onStop(){

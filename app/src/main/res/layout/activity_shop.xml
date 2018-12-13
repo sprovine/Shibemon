@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shiba_background"
+    tools:context=".ShopActivity"
+    tools:layout_editor_absoluteY="73dp">
+
+    <Button
+        android:id="@+id/backShopButton"
+        android:layout_width="138dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="213dp"
+        android:background="@color/light_blue"
+        android:text="BACK"
+        android:textColor="@color/white"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonShopFetch" />
+
+    <Button
+        android:id="@+id/buttonShopFetch"
+        android:layout_width="138dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="203dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_marginTop="31dp"
+        android:background="@color/light_blue"
+        android:text="Fetch"
+        android:textColor="@color/white"
+        android:typeface="monospace"
+        app:layout_constraintBottom_toTopOf="@+id/backShopButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/shop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="206dp"
+        android:text="SHOP"
+        android:textSize="36sp"
+        android:textStyle="italic"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
