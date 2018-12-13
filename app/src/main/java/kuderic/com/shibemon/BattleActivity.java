@@ -345,7 +345,7 @@ public class BattleActivity extends Activity {
         shiba1.currentExp += expGained;
         shiba1.gold += goldGained;
 
-        String saveName = shiba2.getName();
+        final String saveName = shiba2.getName();
         shiba2 = createShiba2();
 
         playWhimper();
