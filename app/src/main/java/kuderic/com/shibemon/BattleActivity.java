@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.Serializable;
+
 
 public class BattleActivity extends Activity {
     private static boolean canAttack = true;
@@ -26,7 +28,7 @@ public class BattleActivity extends Activity {
     private Shiba shiba2;
     final static int hpBarWidth = 125; //in dp. use dpToPx() to find pixel ratio
     final static int expBarWidth = 173; //in dp. use dpToPx() to find pixel ratio
-    final static double speedMultiplier = (double) 1.5; //how much faster everything plays
+    final static double speedMultiplier = (double) 1.0; //how much faster everything plays
     final static double timeMultiplier = 1 / speedMultiplier; //inverse multiplier for time actions take
 
 
@@ -38,11 +40,26 @@ public class BattleActivity extends Activity {
 
         System.out.println("time multiplier is " + timeMultiplier);
 
+        try {
+            Intent intent = this.getIntent();
+            Bundle bundle = intent.getExtras();
+            Shiba shiba1 = (Shiba) bundle.getSerializable("SHIBA1");
+            Shiba shiba2 = (Shiba) bundle.getSerializable("SHIBA2");
+        } catch (Exception e) {
+            PictureReader.setContext(this);
+            shiba1 = new Shiba(15);
+            shiba2 = createShiba2();
+        }
+        updateUI();
+        updateImages();
+        updateMoves();
+
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                bundleShibas(intent);
                 startActivity(intent);
             }
         });
@@ -51,16 +68,11 @@ public class BattleActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ShopActivity.class);
+                bundleShibas(intent);
                 startActivity(intent);
             }
         });
 
-        PictureReader.setContext(this);
-        shiba1 = new Shiba(15);
-        shiba2 = createShiba2();
-        updateUI();
-        updateImages();
-        updateMoves();
     }
 
     protected void shibaAttack(final Shiba shiba, final Shiba.Move move) {
@@ -97,7 +109,7 @@ public class BattleActivity extends Activity {
             }, (long) (1200 * timeMultiplier));
         } else if (shiba == shiba2) {
             damage = calculateDamage(shiba, shiba1, move);
-            damageMultiplier = calculateMultiplier(move.getType(), shiba2.type);
+            damageMultiplier = calculateMultiplier(move.getType(), shiba1.type);
 
             shiba1.setCurrentHealth(shiba1.getCurrentHealth() - damage);
 
@@ -340,17 +352,19 @@ public class BattleActivity extends Activity {
         }, (long) (2000 * timeMultiplier));
 
         //Check for level up
-        if (shiba1.levelUp()) {
+        if (shiba1.currentExp >= shiba1.maxExp) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    shiba1.levelUp();
                     updateUI();
                     displayToast(shiba1.getName() + " has leveled up." +
-                                    "\n" +shiba1.getName() + " has gained 6 attack!",
+                                    "\n" +shiba1.getName() + " has gained 8 HP!" +
+                                    "\n" +shiba1.getName() + " has gained 6 attack!" +
+                                    "\n" +shiba1.getName() + " has gained 4 defence!",
                             true);
                 }
             }, (long) (4000 * timeMultiplier));
-
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -419,5 +433,12 @@ public class BattleActivity extends Activity {
                 }
             }
         }, 2000);
+    }
+
+    private void bundleShibas(Intent intent) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("SHIBA1", (Serializable) shiba1);
+        bundle.putSerializable("SHIBA2", (Serializable) shiba2);
+        intent.putExtras(bundle);
     }
 }

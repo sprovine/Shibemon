@@ -9,13 +9,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.lang.Math;
-import java.util.ArrayList;
 
-public class Shiba {
+public class Shiba implements Serializable {
     private String name;
     private String picture;
     private int level;
@@ -139,7 +137,7 @@ public class Shiba {
     }
 
     private void increaseStats() {
-        increaseMaxHealth(random(7, 9));
+        increaseMaxHealth(8);
         attack += random(5, 6);
         defence += random(2, 3);
     }
@@ -173,7 +171,7 @@ public class Shiba {
         return (int) (Math.random() * range) + min;
     }
 
-    public class Move {
+    public class Move implements Serializable{
         private String name;
         private String type;
 
