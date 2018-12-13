@@ -81,7 +81,7 @@ public class ShopActivity extends Activity {
             public void onClick(View v) {
                 if (shiba1.gold >= cost2){
                     shiba1.gold -= cost2;
-                    shiba1.attack++;
+                    shiba1.attack += 4;
                     displayToast(shiba1.getName() + "has gained 4 attack!");
                     updateUI();
                 } else {
@@ -97,7 +97,7 @@ public class ShopActivity extends Activity {
             public void onClick(View v) {
                 if (shiba1.gold >= cost3){
                     shiba1.gold -= cost3;
-                    shiba1.defence++;
+                    shiba1.defence += 3;
                     displayToast(shiba1.getName() + "has gained 3 defence!");
                     updateUI();
                 } else {
@@ -128,9 +128,9 @@ public class ShopActivity extends Activity {
 
     private void updateCosts() {
         cost1 = (shiba1.getMaxHealth() - shiba1.getCurrentHealth());
-        cost2 = shiba1.attack * 2;
-        cost3 = shiba1.defence * 3;
-        cost4 = shiba1.getMaxHealth();
+        cost2 = (int) (shiba1.attack * 2 * .75);
+        cost3 = (int) (shiba1.defence * 3 *.75);
+        cost4 = (int) (shiba1.getMaxHealth() * .75);
     }
 
     private void bundleShibas(Intent intent) {

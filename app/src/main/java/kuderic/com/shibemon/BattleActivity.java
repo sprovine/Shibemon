@@ -28,7 +28,7 @@ public class BattleActivity extends Activity {
     private Shiba shiba2;
     final static int hpBarWidth = 125; //in dp. use dpToPx() to find pixel ratio
     final static int expBarWidth = 173; //in dp. use dpToPx() to find pixel ratio
-    final static double speedMultiplier = (double) 1.0; //how much faster everything plays
+    final static double speedMultiplier = (double) 1.5; //how much faster everything plays
     final static double timeMultiplier = 1 / speedMultiplier; //inverse multiplier for time actions take
 
 
@@ -166,9 +166,10 @@ public class BattleActivity extends Activity {
     }
 
     private int calculateDamage(Shiba shiba1, Shiba shiba2, Shiba.Move move) {
-        int damage = Shiba.random(90, 100) * shiba1.attack / 100;
+        int damage = Shiba.random(80, 90) * shiba1.attack / 100;
+        damage = (damage - (int) (shiba2.defence * .7));
         double damageMultiplier = calculateMultiplier(move.getType(), shiba2.type);
-        int calc = (int) ((damage - (int) (shiba2.defence * .8)) * damageMultiplier);
+        int calc = (int) (damage * damageMultiplier);
         if (calc < 0) {
             return 0;
         }
@@ -340,7 +341,7 @@ public class BattleActivity extends Activity {
 
     private void shiba2Died() {
         final int expGained = shiba2.getLevel() * 13;
-        final int goldGained = shiba2.getLevel() * 9;
+        final int goldGained = shiba2.getLevel() * 11;
         shiba1.currentExp += expGained;
         shiba1.gold += goldGained;
 
@@ -365,8 +366,8 @@ public class BattleActivity extends Activity {
                     updateUI();
                     displayToast(shiba1.getName() + " has leveled up." +
                                     "\n" +shiba1.getName() + " has gained 8 HP!" +
-                                    "\n" +shiba1.getName() + " has gained 6 attack!" +
-                                    "\n" +shiba1.getName() + " has gained 4 defence!",
+                                    "\n" +shiba1.getName() + " has gained 5 attack!" +
+                                    "\n" +shiba1.getName() + " has gained 3 defence!",
                             true);
                 }
             }, (long) (4000 * timeMultiplier));
