@@ -3,6 +3,7 @@ package kuderic.com.shibemon;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -44,46 +45,14 @@ public class BattleActivity extends Activity {
         PictureReader.setContext(this);
         shiba1 = createShiba();
         shiba2 = createShiba();
-
         updateUI();
-
-        Button buttonMove1 = findViewById(R.id.move1);
-        buttonMove1.setText(shiba1.getMoves()[0].getName());
-        buttonMove1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shibaAttack(shiba1, shiba1.getMoves()[0]);
-            }
-        });
-        Button buttonMove2 = findViewById(R.id.move2);
-        buttonMove2.setText(shiba1.getMoves()[1].getName());
-        buttonMove2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shibaAttack(shiba1, shiba1.getMoves()[1]);
-            }
-        });
-        Button buttonMove3 = findViewById(R.id.move3);
-        buttonMove3.setText(shiba1.getMoves()[2].getName());
-        buttonMove3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shibaAttack(shiba1, shiba1.getMoves()[2]);
-            }
-        });
-        Button buttonMove4 = findViewById(R.id.move4);
-        buttonMove4.setText(shiba1.getMoves()[3].getName());
-        buttonMove4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shibaAttack(shiba1, shiba1.getMoves()[3]);
-            }
-        });
+        updateImages();
+        updateMoves();
     }
 
     protected void shibaAttack(final Shiba shiba, final Shiba.Move move) {
-        System.out.println(shiba.getName() + " is attacking.");
         if (!canAttack) {
+            playBark();
             System.out.println("cant attack");
             return;
         }
@@ -93,7 +62,6 @@ public class BattleActivity extends Activity {
 
         if (shiba == shiba1) {
             shiba2.setCurrentHealth(shiba2.getCurrentHealth() - finalDamage);
-            System.out.println(shiba2.getName() + " health is " + shiba2.getCurrentHealth());
 
             findViewById(R.id.shiba1).startAnimation(AnimationUtils.
                     loadAnimation(getApplicationContext(), R.anim.shiba1attackshiba2));
@@ -107,7 +75,6 @@ public class BattleActivity extends Activity {
             }, 1200);
         } else {
             shiba1.setCurrentHealth(shiba1.getCurrentHealth() - finalDamage);
-            System.out.println(shiba1.getName() + " health is " + shiba1.getCurrentHealth());
 
             findViewById(R.id.shiba2).startAnimation(AnimationUtils.
                     loadAnimation(getApplicationContext(), R.anim.shiba2attackshiba1));
@@ -121,7 +88,6 @@ public class BattleActivity extends Activity {
             }, 1200);
         }
 
-
         new Handler().postDelayed(new Runnable()
         {
             @Override
@@ -130,29 +96,12 @@ public class BattleActivity extends Activity {
                 displayToast("It does " + finalDamage + " damage!", true);
                 updateUI();
                 if (shiba2.getCurrentHealth() == 0) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            displayToast(shiba2.getName() + " has fainted.",
-                                    true);
-                        }
-                    }, 2000);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            shiba2 = createShiba();
-                            updateUI();
-                            displayToast("A wild " + shiba2.getName() + " has appeared!",
-                                    true);
-                        }
-                    }, 4000);
-                    return;
-                }
-                if (shiba1.getCurrentHealth() == 0) {
+                    shiba2Died();
+                } else if (shiba1.getCurrentHealth() == 0) {
+                    playWhimper();
                     Intent intent = new Intent(getApplicationContext(), GameOverActivity.class);
                     startActivity(intent);
-                }
-                if (shiba == shiba1) {
+                } else if (shiba == shiba1) {//Let shiba2 attack
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -210,10 +159,9 @@ public class BattleActivity extends Activity {
         shiba2HPBarGreen.getLayoutParams().width = dpToPx(hpBarWidth) *
                 shiba2.getCurrentHealth() / shiba2.getMaxHealth();
         shiba2HPBarGreen.requestLayout();
+    }
 
-        System.out.println("picture 1 url");
-        System.out.println(shiba1.getPicture());
-
+    private void updateImages() {
         RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher_round)
@@ -226,6 +174,41 @@ public class BattleActivity extends Activity {
                 .into((ImageView) findViewById(R.id.shiba2));
     }
 
+    private void updateMoves() {
+        Button buttonMove1 = findViewById(R.id.move1);
+        buttonMove1.setText(shiba1.getMoves()[0].getName());
+        buttonMove1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shibaAttack(shiba1, shiba1.getMoves()[0]);
+            }
+        });
+        Button buttonMove2 = findViewById(R.id.move2);
+        buttonMove2.setText(shiba1.getMoves()[1].getName());
+        buttonMove2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shibaAttack(shiba1, shiba1.getMoves()[1]);
+            }
+        });
+        Button buttonMove3 = findViewById(R.id.move3);
+        buttonMove3.setText(shiba1.getMoves()[2].getName());
+        buttonMove3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shibaAttack(shiba1, shiba1.getMoves()[2]);
+            }
+        });
+        Button buttonMove4 = findViewById(R.id.move4);
+        buttonMove4.setText(shiba1.getMoves()[3].getName());
+        buttonMove4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shibaAttack(shiba1, shiba1.getMoves()[3]);
+            }
+        });
+    }
+
     public int dpToPx(int dp) {
         float density = getApplicationContext().getResources().getDisplayMetrics().density;
         return Math.round((float) dp * density);
@@ -233,5 +216,63 @@ public class BattleActivity extends Activity {
 
     private Shiba createShiba() {
         return new Shiba();
+    }
+
+    private void shiba2Died() {
+
+        playWhimper();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                displayToast(shiba2.getName() + " has fainted.",
+                        true);
+            }
+        }, 2000);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                shiba2 = createShiba();
+                updateImages();
+                displayToast("A wild " + shiba2.getName() + " has appeared!",
+                        true);
+            }
+        }, 4000);
+    }
+
+    private void playWhimper() {
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.whimper);
+
+        int startFrom = Shiba.random(0, 24000);
+        int endAfter = Shiba.random(22, 36) / 10 * 1000;
+
+        mp.seekTo(startFrom);
+        mp.start();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mp.stop();
+                mp.release();
+            }
+        }, endAfter);
+    }
+
+    private void playBark() {
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.bark1);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mp.start();
+            }
+        }, 700);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mp.stop();
+                mp.release();
+            }
+        }, 2000);
     }
 }

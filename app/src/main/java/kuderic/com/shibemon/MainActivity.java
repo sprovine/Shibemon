@@ -14,12 +14,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        startService(new Intent(this, BackgroundMusic.class));
+        /*
         MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.doodlebob);
         int maxVolume = 100;
-        int currVolume = 50;
+        int currVolume = 0;
         float log1 = (float)(Math.log(maxVolume - currVolume)/Math.log(maxVolume));
         mediaPlayer.setVolume(1 - log1, 1 - log1);
-        mediaPlayer.start();
+        mediaPlayer.start();*/
 
         //Play button listener
         Button playButton = findViewById(R.id.backButton);
