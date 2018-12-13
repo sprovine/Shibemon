@@ -42,7 +42,7 @@ public class BattleActivity extends Activity {
 
         if (this.getIntent().getExtras() == null) {
             PictureReader.setContext(this);
-            shiba1 = new Shiba(15);
+            shiba1 = new Shiba(10);
             shiba2 = createShiba2();
             System.out.println("Shibas created");
         } else {
@@ -335,7 +335,7 @@ public class BattleActivity extends Activity {
     }
 
     private Shiba createShiba2() {
-        return new Shiba(shiba1.getLevel() * Shiba.random(70, 90) / 100);
+        return new Shiba(shiba1.getLevel() * Shiba.random(70, 100) / 100);
     }
 
     private void shiba2Died() {

@@ -61,7 +61,9 @@ public class ShopActivity extends Activity {
         buttonMove1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (shiba1.gold >= cost1){
+                if (cost1 == 0) {
+                    displayToast(shiba1.getName() + " doesn't need healing dumb.");
+                } else if (shiba1.gold >= cost1){
                     shiba1.gold -= cost1;
                     shiba1.setCurrentHealth(shiba1.getMaxHealth());
                     displayToast(shiba1.getName() + " has been healed!");
