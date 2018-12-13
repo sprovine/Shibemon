@@ -10,8 +10,8 @@
 
     <Button
         android:id="@+id/backShopButton"
-        android:layout_width="wrap_content"
-        android:layout_height="34dp"
+        android:layout_width="69dp"
+        android:layout_height="39dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
@@ -27,12 +27,12 @@
 
     <Button
         android:id="@+id/buttonShopFetch"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="70dp"
+        android:layout_height="43dp"
         android:layout_marginEnd="11dp"
         android:layout_marginRight="11dp"
         android:background="@drawable/main_button"
-        android:text="Fetch"
+        android:text="FETCH"
         android:textColor="@color/white"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="@+id/backShopButton"
