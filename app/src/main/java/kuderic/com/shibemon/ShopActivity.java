@@ -62,7 +62,7 @@ public class ShopActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (cost1 == 0) {
-                    displayToast(shiba1.getName() + " doesn't need healing dumb.");
+                    displayToast(shiba1.getName() + " doesn't need healing dumbie.");
                 } else if (shiba1.gold >= cost1){
                     shiba1.gold -= cost1;
                     shiba1.setCurrentHealth(shiba1.getMaxHealth());
@@ -130,7 +130,7 @@ public class ShopActivity extends Activity {
         cost1 = (shiba1.getMaxHealth() - shiba1.getCurrentHealth());
         cost2 = (int) (shiba1.attack * 2 * .75);
         cost3 = (int) (shiba1.defence * 3 *.75);
-        cost4 = (int) (shiba1.getMaxHealth() * .75);
+        cost4 = (int) (shiba1.getMaxHealth() * .60);
     }
 
     private void bundleShibas(Intent intent) {
