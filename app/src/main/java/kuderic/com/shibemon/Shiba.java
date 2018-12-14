@@ -92,7 +92,7 @@ public class Shiba implements Serializable {
             type = "grass";
         }
         if (rand == 3) {
-            type = "fire";
+            type = "water";
         }
 
         try {
